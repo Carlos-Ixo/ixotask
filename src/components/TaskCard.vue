@@ -3,7 +3,7 @@
     class="event-link"
     :to="{ name: 'task-show', params: { id: task.id, list: task.list_id } }"
   >
-    <div class="event-card -shadow">
+    <div :class="classObject" class="event-card -shadow">
       <span class="eyebrow">@{{ task.created_at }}</span>
       <h4 class="title">{{ task.title }}</h4>
       <BaseIcon name="clock">Vencimiento {{ task.due_date }}</BaseIcon>
@@ -17,7 +17,20 @@ export default {
     task: Object
   },
   data() {
-    return {};
+    return {
+      delayed: false,
+      completed: false,
+      pending: false
+    };
+  },
+  computed: {
+    classObject: function() {
+      return {
+        delayed: this.task.status == "delayed",
+        completed: this.task.status == "completed",
+        pending: this.task.status == "pending"
+      };
+    }
   }
 };
 </script>
@@ -28,6 +41,15 @@ export default {
   margin-bottom: 24px;
   transition: all 0.2s linear;
   cursor: pointer;
+}
+.delayed {
+  border-right: solid #ea5254 4px;
+}
+.completed {
+  border-right: solid #35495d 4px;
+}
+.pending {
+  border-right: solid #6ddad2 4px;
 }
 .event-card:hover {
   transform: scale(1.01);
