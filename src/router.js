@@ -1,8 +1,10 @@
 import Vue from "vue";
-import Router from "vue-router";
-import Home from "./views/Home.vue";
+import Router from "vue-router"; //Include the Vue Router Library
+import ListShow from "./views/ListShow.vue";
+import TaskShow from "./views/TaskShow.vue";
+import FileNotFound from "./views/FileNotFound.vue";
 
-Vue.use(Router);
+Vue.use(Router); // Use the Router
 
 export default new Router({
   mode: "history",
@@ -10,17 +12,30 @@ export default new Router({
   routes: [
     {
       path: "/",
-      name: "home",
-      component: Home
+      name: "list-show",
+      component: ListShow
     },
     {
-      path: "/about",
-      name: "about",
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "about" */ "./views/About.vue")
+      path: "/lists/:list/tasks/:id",
+      name: "task-show",
+      component: TaskShow,
+      props: true
+    },
+    {
+      path: "*",
+      component: FileNotFound
     }
+
+    // {
+    //   path: "/create",
+    //   name: "event-create",
+    //   component: EventCreate
+    // },
+    // {
+    //   path: "/user/:username",
+    //   name: "user",
+    //   component: User,
+    //   props: true
+    // }
   ]
 });
