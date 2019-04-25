@@ -1,26 +1,24 @@
 <template>
-  <div :class="{ listDeleted: isDeleted }" @click="check">
-    <div class="delete-list" @click="deleteList()" id="trash">
+  <div>
+    <div class="delete-list" @click="deleteList({ list })" id="trash">
       <BaseIcon name="trash" width="20" height="20"></BaseIcon>
     </div>
     <h1>
-      <BaseIcon class="refresh-logo" name="refresh-cw" />
+      <BaseIcon class="refresh-logo" name="refresh-cw"/>
       {{ list.name }}
     </h1>
     <div>
-      <TaskCard v-for="task in tasks" :key="task.id" :task="task" />
+      <TaskCard v-for="task in tasks" :key="task.id" :task="task"/>
     </div>
 
     <div v-if="newTask">
       <div class="-shadow">
-        <input name="new-task-name" type="text" v-model="newTaskName" />
+        <input name="new-task-name" type="text" v-model="newTaskName">
       </div>
     </div>
     <div v-else>
       <div class="-shadow">
-        <BaseIcon id="new-task-icon" name="plus" width="30" height="30"
-          >Nueva Tarea</BaseIcon
-        >
+        <BaseIcon id="new-task-icon" name="plus" width="30" height="30">Nueva Tarea</BaseIcon>
       </div>
     </div>
   </div>
@@ -29,7 +27,7 @@
 <script>
 import TaskCard from "@/components/TaskCard.vue";
 import EventService from "@/services/EventService.js";
-import swal from "sweetalert";
+import { mapState, mapActions } from "vuex";
 
 export default {
   props: {
@@ -40,43 +38,21 @@ export default {
       tasks: this.list.tasks,
       newTask: false,
       newTaskName: "",
-      isDeleted: false
+      idList: ""
     };
+  },
+  mounted() {
+    this.idlist = this.list.id;
+    console.log(this.idlist);
   },
   components: {
     TaskCard
   },
   methods: {
-    check() {
-      this.tasks = this.list.tasks;
-      console.log("lista actualizada");
-    },
-    deleteList() {
-      //console.log(this.list.id);
-      swal({
-        title: "Estas seguro que deseas borrar la lista?",
-        text:
-          "Todas las tareas programadas en la lista seran borradas tambien!",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true
-      }).then(willDelete => {
-        if (willDelete) {
-          EventService.delList(this.list.id)
-            .then(() => {
-              this.isDeleted = true;
-            })
-            .catch(error => {
-              console.log("There was an error en el check", error.response);
-            });
-          swal("Poof! Tu lista a sido borrada!", {
-            icon: "success"
-          });
-        } else {
-          swal("Tu lista esta a salvo!");
-        }
-      });
-    }
+    // deleteList(id) {
+    //   console.log(id);
+    // }
+    ...mapActions(["deleteList"])
   }
 };
 </script>

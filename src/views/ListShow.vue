@@ -1,36 +1,47 @@
 <template>
-  <div class="lists-container" @click="check()">
-    <div class="list-tasks -shadow" v-for="list in lists" :key="list.id">
-      <TaskList :list="list" />
-      <!-- <h4 class="title">{{ list.title }}</h4> -->
-    </div>
-    <div v-if="newList">
-      <div @keyup.enter="nameNewList" class="list-tasks add-list -shadow">
-        <input
-          @keyup.enter="addNewList"
-          name="new-list-name"
-          type="text"
-          v-model="newListName"
-        />
+  <div>
+    <template v-if="this.$store.state.cargando">
+      <div>Cargando listas</div>
+      <div class="progress">
+        <div class="indeterminate"></div>
       </div>
-    </div>
-    <div v-else>
-      <div @click="nameNewList" class="list-tasks add-list -shadow">
-        <BaseIcon id="new-list-icon" name="plus" width="50" height="50"
-          >Nueva Lista</BaseIcon
-        >
+    </template>
+    <template v-else>
+      <div class="lists-container">
+        <div class="list-tasks -shadow" v-for="list in listas" :key="list.id">
+          <TaskList :list="list" />
+          <!-- <h4 class="title">{{ list.title }}</h4> -->
+        </div>
+        <div v-if="newList">
+          <div @keyup.enter="nameNewList" class="list-tasks add-list -shadow">
+            <input
+              @keyup.enter="addNewList(newListName)"
+              name="new-list-name"
+              type="text"
+              v-model="newListName"
+            />
+          </div>
+        </div>
+        <div v-else>
+          <div @click="nameNewList" class="list-tasks add-list -shadow">
+            <BaseIcon id="new-list-icon" name="plus" width="50" height="50"
+              >Nueva Lista</BaseIcon
+            >
+          </div>
+        </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
 <script>
 import TaskList from "@/views/TaskList.vue";
-import EventService from "@/services/EventService.js";
+// import EventService from "@/services/EventService.js";
+import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
-      lists: [],
+      // lists: [],
       newList: false,
       newListName: ""
     };
@@ -38,54 +49,22 @@ export default {
   components: {
     TaskList
   },
-  created() {
-    EventService.getLists()
-      .then(response => {
-        //console.log(response.data);
-        this.lists = response.data;
-      })
-      .catch(error => {
-        console.log("There was an error", error.response);
-      });
+  mounted() {
+    this.$store.dispatch("obtenerAsync");
   },
+  computed: { ...mapState(["listas"]) },
   methods: {
     nameNewList() {
       //console.log("nueva lista");
       if (this.newList) {
         this.newList = false;
+        this.newListName = "";
       } else {
         this.newList = true;
+        this.newListName = "";
       }
     },
-    check() {
-      EventService.getLists()
-        .then(response => {
-          console.log(response.data);
-          this.lists = [];
-          this.lists = response.data;
-        })
-        .catch(error => {
-          console.log("There was an error en el check", error.response);
-        });
-    },
-    addNewList() {
-      //console.log("add nueva lista");
-      //console.log(this.newListName);
-      EventService.postLists(this.newListName)
-        .then(() => {
-          EventService.getLists()
-            .then(response => {
-              //console.log(response.data);
-              this.lists = response.data;
-            })
-            .catch(error => {
-              console.log("There was an erroren el add", error.response);
-            });
-        })
-        .catch(error => {
-          console.log("There was an error 1", error.response);
-        });
-    }
+    ...mapActions(["addNewList"])
   }
 };
 </script>
