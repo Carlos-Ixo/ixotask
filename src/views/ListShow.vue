@@ -1,17 +1,24 @@
 <template>
   <div class="lists-container" @click="check()">
     <div class="list-tasks -shadow" v-for="list in lists" :key="list.id">
-      <TaskList :list="list"/>
+      <TaskList :list="list" />
       <!-- <h4 class="title">{{ list.title }}</h4> -->
     </div>
     <div v-if="newList">
       <div @keyup.enter="nameNewList" class="list-tasks add-list -shadow">
-        <input @keyup.enter="addNewList" name="new-list-name" type="text" v-model="newListName">
+        <input
+          @keyup.enter="addNewList"
+          name="new-list-name"
+          type="text"
+          v-model="newListName"
+        />
       </div>
     </div>
     <div v-else>
       <div @click="nameNewList" class="list-tasks add-list -shadow">
-        <BaseIcon id="new-list-icon" name="plus" width="50" height="50">Nueva Lista</BaseIcon>
+        <BaseIcon id="new-list-icon" name="plus" width="50" height="50"
+          >Nueva Lista</BaseIcon
+        >
       </div>
     </div>
   </div>
@@ -65,7 +72,7 @@ export default {
       //console.log("add nueva lista");
       //console.log(this.newListName);
       EventService.postLists(this.newListName)
-        .then(res => {
+        .then(() => {
           EventService.getLists()
             .then(response => {
               //console.log(response.data);

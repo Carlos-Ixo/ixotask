@@ -18,5 +18,8 @@ export default {
   },
   postLists(list) {
     return apiClient.post("/lists", { name: list });
+  },
+  delList(id) {
+    return apiClient.delete("/lists/" + id);
   }
 };

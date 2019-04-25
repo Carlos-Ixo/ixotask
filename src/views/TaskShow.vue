@@ -9,7 +9,7 @@
       <!-- <p>{{ task[0].files_attached[0].file_url }}</p> -->
       <div v-for="file in files" :key="file.file_url">
         <p>{{ file.file_name }}</p>
-        <img :src="file.file_url" />
+        <img :src="file.file_url" class="task-img" />
       </div>
     </div>
   </div>
@@ -57,5 +57,9 @@ export default {
 .list-group > .list-item {
   padding: 1em 0;
   border-bottom: solid 1px #e5e5e5;
+}
+.task-img {
+  width: 100%;
+  max-width: 500px;
 }
 </style>
