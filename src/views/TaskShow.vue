@@ -9,7 +9,7 @@
       <!-- <p>{{ task[0].files_attached[0].file_url }}</p> -->
       <div v-for="file in files" :key="file.file_url">
         <p>{{ file.file_name }}</p>
-        <img :src="file.file_url" class="task-img">
+        <img :src="file.file_url" class="task-img" />
       </div>
     </div>
   </div>
@@ -41,7 +41,7 @@ export default {
 
 <style>
 .location {
-  margin-bottom: 1px;
+  margin-bottom: 0;
 }
 .location > .icon {
   margin-left: 10px;

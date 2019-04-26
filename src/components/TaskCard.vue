@@ -1,26 +1,35 @@
 <template>
-  <router-link
-    class="event-link"
-    :to="{ name: 'task-show', params: { id: task.id, list: task.list_id } }"
-  >
-    <div :class="classObject" class="event-card -shadow">
-      <span class="eyebrow">@{{ task.created_at }}</span>
-      <h4 class="title">{{ task.title }}</h4>
-      <BaseIcon name="clock">Vencimiento {{ task.due_date }}</BaseIcon>
+  <transition name="fade">
+    <div class="event-link">
+      <div :class="classObject" class="event-card -shadow">
+        <span class="eyebrow">@{{ task.created_at }}</span>
+        <h4 class="title">{{ task.title }}</h4>
+        <BaseIcon name="clock">Vencimiento {{ task.due_date }}</BaseIcon>
+        <div @click.once.stop.prevent="showModal(true)">
+          <BaseIcon name="check">Ver</BaseIcon>
+        </div>
+        <!-- use the modal component, pass in the prop -->
+        <Modal v-if="showm" @close="showModal(false)">
+          <h3 slot="header">Encabezado {{ this.task.title }}</h3>
+        </Modal>
+      </div>
     </div>
-  </router-link>
+  </transition>
 </template>
 
 <script>
+import Modal from "./Modal.vue";
 export default {
   props: {
     task: Object
   },
+  components: { Modal },
   data() {
     return {
       delayed: false,
       completed: false,
-      pending: false
+      pending: false,
+      showm: false
     };
   },
   computed: {
@@ -30,6 +39,16 @@ export default {
         completed: this.task.status == "completed",
         pending: this.task.status == "pending"
       };
+    }
+  },
+  methods: {
+    showModal(flag) {
+      console.log(this.task.id);
+      if (flag) {
+        this.showm = true;
+      } else {
+        this.showm = false;
+      }
     }
   }
 };

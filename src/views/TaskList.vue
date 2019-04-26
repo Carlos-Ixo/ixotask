@@ -4,21 +4,23 @@
       <BaseIcon name="trash" width="20" height="20"></BaseIcon>
     </div>
     <h1>
-      <BaseIcon class="refresh-logo" name="refresh-cw"/>
+      <BaseIcon class="refresh-logo" name="refresh-cw" />
       {{ list.name }}
     </h1>
     <div>
-      <TaskCard v-for="task in tasks" :key="task.id" :task="task"/>
+      <TaskCard v-for="task in tasks" :key="task.id" :task="task" />
     </div>
 
     <div v-if="newTask">
       <div class="-shadow">
-        <input name="new-task-name" type="text" v-model="newTaskName">
+        <input name="new-task-name" type="text" v-model="newTaskName" />
       </div>
     </div>
     <div v-else>
       <div class="-shadow">
-        <BaseIcon id="new-task-icon" name="plus" width="30" height="30">Nueva Tarea</BaseIcon>
+        <BaseIcon id="new-task-icon" name="plus" width="30" height="30"
+          >Nueva Tarea</BaseIcon
+        >
       </div>
     </div>
   </div>
@@ -26,6 +28,7 @@
 
 <script>
 import TaskCard from "@/components/TaskCard.vue";
+
 import EventService from "@/services/EventService.js";
 import { mapState, mapActions } from "vuex";
 
@@ -43,15 +46,11 @@ export default {
   },
   mounted() {
     this.idlist = this.list.id;
-    console.log(this.idlist);
   },
   components: {
     TaskCard
   },
   methods: {
-    // deleteList(id) {
-    //   console.log(id);
-    // }
     ...mapActions(["deleteList"])
   }
 };

@@ -3,12 +3,11 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import BaseIcon from "@/components/BaseIcon.vue";
+
 //import BaseButton from '@/componenets/BaseButton.vue';
 //import BaseInput from '@/componenets/BaseInput.vue';
 
 Vue.component("BaseIcon", BaseIcon);
-//Vue.component('BaseButton', BaseButton);
-//Vue.component('BaseInput', BaseInput);
 
 Vue.config.productionTip = false;
 
