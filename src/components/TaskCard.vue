@@ -1,11 +1,15 @@
 <template>
   <transition name="fade">
     <div class="event-link">
-      <div :class="classObject" class="event-card -shadow">
+      <div
+        @click.capture="showModal(true)"
+        :class="classObject"
+        class="event-card -shadow"
+      >
         <span class="eyebrow">@{{ task.created_at }}</span>
         <h4 class="title">{{ task.title }}</h4>
         <BaseIcon name="clock">Vencimiento {{ task.due_date }}</BaseIcon>
-        <div @click.once.stop.prevent="showModal(true)">
+        <div>
           <BaseIcon name="check">Ver</BaseIcon>
         </div>
         <!-- use the modal component, pass in the prop -->
@@ -71,7 +75,6 @@ export default {
   border-right: solid #6ddad2 4px;
 }
 .event-card:hover {
-  transform: scale(1.01);
   box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.2), 0 1px 15px 0 rgba(0, 0, 0, 0.19);
 }
 .event-card > .title {
